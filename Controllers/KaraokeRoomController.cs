@@ -33,12 +33,12 @@ namespace KARAOKEAPIWEB.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create(KaraokeRoomVM karaokeroomVM)
+        public IActionResult Create(KaraokeRoomVM karaokeroomVM )
         {
             var karaokeroom = new KaraokeRoom()
             {
                 Id = Guid.NewGuid(),
-                TenQuan = karaokeroomVM.TenQuan,
+            TenQuan = karaokeroomVM.TenQuan,
                 DiaChi = karaokeroomVM.DiaChi,
                 Img = karaokeroomVM.Img,
                 SucChua = karaokeroomVM.SucChua,

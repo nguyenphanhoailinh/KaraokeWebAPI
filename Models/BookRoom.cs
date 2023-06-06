@@ -12,8 +12,10 @@ namespace KARAOKEAPIWEB.Models
 
         public int people { get; set; }
 
-        public string roomId { get; set; }
-        public virtual ICollection<KaraokeRoom> KaraokeRooms { get; set; } = null!;
+        public DateTime BookingDate { get; set; }
+        public KaraokeRoom room { get; set; }
+        public int roomId { get; set; }
+       /* public virtual ICollection<KaraokeRoom> KaraokeRooms { get; set; } = null!;*/
     }
 
     public class BookRoom :BookRoomN

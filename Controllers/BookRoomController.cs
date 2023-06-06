@@ -1,4 +1,5 @@
-﻿using KARAOKEAPIWEB.Migrations;
+﻿using KARAOKEAPIWEB.Data;
+using KARAOKEAPIWEB.Migrations;
 using KARAOKEAPIWEB.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -10,6 +11,12 @@ namespace KARAOKEAPIWEB.Controllers
     public class BookRoomController : ControllerBase
     {
         public static List<BookRoom> bookRooms = new List<BookRoom>();
+        private readonly MyDbContext _context;
+
+        public BookRoomController(MyDbContext context)
+        {
+            _context = context;
+        }
 
         [HttpGet]
         public IActionResult GetAll()
@@ -34,26 +41,38 @@ namespace KARAOKEAPIWEB.Controllers
             }
         }
         [HttpPost]
-        public IActionResult Create([FromBody] BookRoomN bookRoomN, [FromBody] KaraokeRoom karaokeRoom,string id )
+        public IActionResult Create(/*[FromBody]*/ BookRoomN bookRoomN/*, [FromBody] KaraokeRoom karaokeRoom*/ )
         {
-
-            var bookroom = new BookRoom()
+            try
             {
-                Id = Guid.NewGuid(),
-                name = bookRoomN.name,
-                phone = bookRoomN.phone,
-                day = bookRoomN.day,
-                people = bookRoomN.people,
-                /*roomId=Guid.NewGuid(),*/
+                var bookroom = new BookRoom()
 
-                roomId = bookRoomN.roomId.Equals(karaokeRoom.Id).ToString()
-        };
-            bookRooms.Add(bookroom);
-            return Ok(new
+                {
+                    Id = Guid.NewGuid(),
+                    name = bookRoomN.name,
+                    phone = bookRoomN.phone,
+                    day = bookRoomN.day,
+                    people = bookRoomN.people,
+                    /*roomId=Guid.NewGuid(),*/
+
+                    /*roomId = bookRoomN.roomId.Equals(karaokeRoom.Id).ToString()*/
+
+                    BookingDate=DateTime.Now,
+                    /*roomId = bookRoomN.roomId,*/
+                    roomId=1,
+
+
+                };
+                _context.bookRooms.Add(bookroom);
+                _context.SaveChanges();
+                return Ok(bookroom);
+            }
+            catch
             {
-                Success = true,
-                Data = bookroom
-            });
+                return BadRequest();
+            }
+          
+          
         }
         [HttpPut("{id}")]
         public IActionResult Edit(string id, BookRoom bookRoomEdit)
